@@ -20,5 +20,6 @@ public class EqualsTest {
         // false
         System.out.println(a.Equals(b));
         // true
+        // 김준엽 ㅂ
     }
 }
