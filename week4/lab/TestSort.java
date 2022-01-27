@@ -1,3 +1,6 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 public class TestSort {
     public static void testSort() {
         String[] input = {"apple", "derp", "banna", "candy", "zebra"};
@@ -21,12 +24,13 @@ public class TestSort {
         // }
 
         // Equal to 위의 알고리즘
-        // org.junit.Assert.assertArrayEquals(expected, input);
+        assertArrayEquals(expected, input);
     }
     
-    
+    @Test
     public static void main(String[] args) {
         testSort();
+        System.out.println("Good!");
     }
 
     // Quiz
