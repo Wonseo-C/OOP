@@ -9,17 +9,17 @@ public class RandomRoserSorter {
     public static void main(String[] argv) throws IOException{
         File file = new File("roster.txt");
         FileReader fr = new FileReader(file);
-        BufferedReader br =new BufferedReader(fr);
+        try (BufferedReader br = new BufferedReader(fr)) {
+            ArrayList<String> list = new ArrayList<>();
+            String line;
+            while ((line = br.readLine()) != null ) {
+                list.add(line);
+            }
 
-        ArrayList<String> list = new ArrayList<>();
-        String line;
-        while ((line = br.readLine()) != null ) {
-            list.add(line);
-        }
-
-        Collections.shuffle(list);
-        for (String student : list) {
-            System.out.println(student);
+            Collections.shuffle(list);
+            for (String student : list) {
+                System.out.println(student);
+            }
         }
     }
 }
