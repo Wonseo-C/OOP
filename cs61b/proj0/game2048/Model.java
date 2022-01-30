@@ -172,9 +172,39 @@ public class Model extends Observable {
      * 1. There is at least one empty space on the board.
      * 2. There are two adjacent tiles with the same value.
      */
-    public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+    public static boolean nearSameValue(Board b) {
+        int[] dx = {0,0,-1,1};
+        int[] dy = {-1,1,0,0};
+
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+        
+                for (int k = 0; k < 4; k++) {
+                    int sx = i + dx[k];
+                    int sy = j + dy[k];
+                    
+                    if (0 < sx && sx < b.size() && 0 < sy && sy < b.size()) {
+                        if (b.tile(i, j).value() == b.tile(sx, sy).value()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
         return false;
+    }
+
+
+    public static boolean atLeastOneMoveExists(Board b) {
+        
+        
+        if (emptySpaceExists(b)){
+            return true;
+        } else if (nearSameValue(b)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
