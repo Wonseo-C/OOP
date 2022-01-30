@@ -3,6 +3,7 @@ package game2048;
 import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Observable;
+import java.util.concurrent.TimeoutException;
 
 
 /** The state of a game of 2048.
@@ -111,9 +112,56 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
-        // for the tilt to the Side SIDE. If the board changed, set the
-        // changed local variable to true.
+        board.setViewingPerspective(side);
+        
+        for (int c = 0; c < board.size(); c ++) {
+            int[] temp = new int[4];
+
+            for (int r = 0; r < board.size(); r ++) {
+                Tile t = board.tile(c, r);
+                if (t != null) {
+                    temp[r] = t.value();
+                } else {
+                    temp[r] = 0;
+                }
+            }
+
+            for (int r = board.size()-2; r >= 0; r --) {
+                int val = 0;
+                int flag = 0;
+                if (temp[r] != 0) {
+                    for (int sr = r+1; sr < board.size(); sr ++) {
+                        if (temp[sr] == temp[r]) {
+                            flag = 1;
+                            val = sr;
+                            break;
+                        } else if (temp[sr] == 0) {
+                            flag = 0;
+                            val = sr;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+                if (val != 0) {
+                    Tile t = board.tile(c, r);
+                    board.move(c, val, t);
+                    changed = true;
+                    if (flag == 1) {
+                        temp[val] = -1;
+                        score += board.tile(c, val).value();
+                        temp[r] = 0;
+                    } else {
+                        temp[val] = temp[r];
+                        temp[r] = 0;
+                    }
+                }
+
+            }
+        }
+
+        board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
